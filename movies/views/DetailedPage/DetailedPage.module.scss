@@ -1,0 +1,30 @@
+@import '../../styles/index.scss';
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  min-height: 700px;
+  position: relative;
+}
+.btn {
+  border: 1px solid $dark-color;
+  width: 100px;
+  height: 35px;
+  border-radius: 12px;
+  background-color: $main-color;
+  color: $text-color;
+  transition: all 0.7s ease, color 1s ease;
+  position: absolute;
+  top: 45px;
+  left: 45px;
+  &:hover {
+    box-shadow: inset 27em 0 $bright-color;
+    color: $light-color;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,66 @@
+@import '../../styles/index.scss';
+@mixin image-hover {
+  &:hover {
+    animation-name: hoverPop;
+    animation-duration: 2s;
+    animation-fill-mode: forward;
+    box-shadow: 0px 0px 30px 0px rgba(21, 64, 128, 0.27);
+  }
+  @keyframes hoverPop {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    33% {
+      transform: scale(1.05);
+    }
+    66% {
+      transform: scale(0.9);
+    }
+  }
+}
+.container {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  min-height: 700px;
+  padding: 20px;
+  margin: 0 auto;
+}
+.selectWrapper {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.main {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  height: auto;
+}
+.item {
+  border: none;
+  border-radius: 12px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  @include image-hover;
+  cursor: pointer;
+}
+.img {
+  border-radius: 12px;
+  width: 100%;
+  height: 300px;
+}
+.title {
+  font-size: $fs-normal;
+  font-weight: 700;
+  line-height: 20px;
+  text-align: center;
+  margin-top: 15px;
+}
+.date {
+  font-size: $fs-small;
+  font-style: italic;
+  text-align: center;
+}
