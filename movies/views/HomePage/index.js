@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 import Pagination from "../../utils/Pagination/Pagination";
 
 export const HomePage = () => {
@@ -53,7 +54,7 @@ export const HomePage = () => {
       setSortedMovies(movies);
     }
   };
-  const [perPage, setPerPage] = useState(10);
+  const [perPage, setPerPage] = useState(5);
   const hanldePerPageChange = (e) => {
     const option = e.target.value;
     setPerPage(option);
@@ -61,19 +62,28 @@ export const HomePage = () => {
   //set pagination for the page
   const firstRender = useRef(true);
   const [currentPage, setCurrentPage] = useState(1);
-  let limit = 0;
-  const offset = currentPage * perPage - perPage;
-  //   setSortedMovies(sortedMovies.slice(limit, offset));
 
   useEffect(() => {
     if (!firstRender.current) {
-      limit = perPage;
-      setSortedMovies(sortedMovies.slice(limit, offset));
+      (async () => {
+        const limit = perPage;
+        const offset = currentPage * 10 - 10;
+        try {
+          const response = await fetch(
+            `./movies.js/?limit=${limit}&offset=${offset}`
+          );
+          const result = await response.json();
+          if (result) {
+            setSortedMovies(result);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      })();
     }
+    firstRender.current = false;
   }, [currentPage, perPage]);
 
-  console.log("[movies]", movies);
-  console.log("[sortedMovies]", sortedMovies);
   return (
     <div className={style.container}>
       <div className={style.selectWrapper}>
@@ -93,20 +103,23 @@ export const HomePage = () => {
           <MenuItem value={"by_date_old"}>Sort date (from old to new)</MenuItem>
           <MenuItem value={"by_date_new"}>Sort date (from new to old)</MenuItem>
         </Select>
-        <Select
-          onChange={hanldePerPageChange}
-          style={{
-            height: "30px",
-            margin: "10px",
-            marginBottom: "30px",
-            width: "100px",
-            borderRadius: "4px",
-          }}
-        >
-          <MenuItem value={5}>5</MenuItem>
-          <MenuItem value={10}>10</MenuItem>
-          <MenuItem value={20}>20</MenuItem>
-        </Select>
+        <div style={{ display: "flex", gap: "10px", alignItems: "baseline" }}>
+          <InputLabel id="demo-simple-select-label">Items on page</InputLabel>
+          <Select
+            onChange={hanldePerPageChange}
+            style={{
+              height: "30px",
+              margin: "10px",
+              marginBottom: "30px",
+              width: "100px",
+              borderRadius: "4px",
+            }}
+          >
+            <MenuItem value={5}>5</MenuItem>
+            <MenuItem value={10}>10</MenuItem>
+            <MenuItem value={20}>20</MenuItem>
+          </Select>
+        </div>
       </div>
       <div>
         <Pagination
